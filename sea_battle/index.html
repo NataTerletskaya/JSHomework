@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Sea Battle</title>
+    <script src="War_of_ships.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <table id="game">
+            <!-- ... table will appear here ... -->
+        </table>
+    </div>
+    <script>
+        window.onload = function() {
+            window.game = new SeaBattle();
+            var gameTable = document.querySelector('#game');
+
+            window.render = function() {
+                gameTable.innerHTML = "";
+                renderGameTable(game.getField());
+            };
+
+            var renderGameTable = function(field) {
+                for (var row = 0; row < field.length; row++) {
+                    var gameRow = document.createElement('tr');
+
+                    for (var col = 0; col < field[row].length; col++) {
+                        var gameCell = document.createElement('td');
+                        gameCell.addEventListener('click', updateGameTable);
+                        gameCell.dataset['pos'] = JSON.stringify({
+                            x: col,
+                            y: row
+                        });
+                        gameCell.innerText = 'O';
+                        if (field[row][col].ship) {
+                            gameCell.innerText = 'X';
+                        }
+                        if (field[row][col].message === "Убил!") {
+                            gameCell.style.backgroundColor = '#000000';
+                            gameCell.style.color = '#FFFFFF';
+                        }
+                        gameRow.appendChild(gameCell);
+                    }
+                    gameTable.appendChild(gameRow);
+                }
+            };
+
+            var updateGameTable = function(event) {
+                var cell = event.target;
+                var position = JSON.parse(cell.dataset['pos']);
+                game.shoot(position['x'], position['y']);
+                render();
+            };
+            // render game
+            game.createField();
+            render();
+        };
+    </script>
+    <style>
+        .container {
+            width: 1024px;
+            margin: 0 auto;
+        }
+        
+        table {
+            margin: 100px auto;
+        }
+        
+        td {
+            cursor: pointer;
+            text-align: center;
+            vertical-align: middle;
+            border: 1px dotted #dadada;
+            width: 15px;
+            height: 15px;
+        }
+    </style>
+</body>
+
+</html>
