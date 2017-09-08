@@ -39,8 +39,17 @@ function rand(min, max) {
 };
 
 let t = createTable(10);
-
+// set position of table
 let h = window.innerHeight / 2;
 let w = window.innerWidth / 2;
 t.style.top = (h - t.clientHeight / 2) + 'px';
 t.style.left = (w - t.clientWidth / 2) + 'px';
+
+//amination
+let timerId = setInterval(() => {
+    const computedValue = parseInt(div.style.top || 0);
+    div.style.top = computedValue + 1 + 'px';
+    if (computedValue >= 200) {
+        clearInterval(timerId);
+    }
+}, 16);
