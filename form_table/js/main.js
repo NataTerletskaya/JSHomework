@@ -3,23 +3,25 @@ class TableCreator {
         let { elementId, formId } = options;
         this.holder = document.getElementById(elementId);
         this.form = document.getElementById(formId);
+        this.handleSubmit = this.handleSubmit.bind(this);
     };
     // creating a table after pushing button Submit
     init() {
-        this.form.addEventListener('submit', (event) => {
-            // prevent default action
-            event.preventDefault();
-            //delete previous table
-            this.holder.innerText = '';
-            //create table with given rows and columns
-            let rows = this.form.querySelector('input[name=rows]').value;
-            let cols = this.form.querySelector('input[name=columns]').value;
-            let table = this.createTable(rows, cols);
-            //set style to the table
-            table.classList.add('table', 'table-bordered');
-            //append the table into <div id = elementId>
-            this.holder.appendChild(table);
-        });
+        this.form.addEventListener('submit', this.handleSubmit);
+    };
+    handleSubmit(event) {
+        // prevent default action
+        event.preventDefault();
+        //delete previous table
+        this.holder.innerText = '';
+        //create table with given rows and columns
+        let rows = this.form.querySelector('input[name=rows]').value;
+        let cols = this.form.querySelector('input[name=columns]').value;
+        let table = this.createTable(rows, cols);
+        //set style to the table
+        table.classList.add('table', 'table-bordered');
+        //append the table into <div id = elementId>
+        this.holder.appendChild(table);
     };
     // logic for creating a table
     createTable(rows, columns) {
@@ -51,7 +53,7 @@ class TableCreator {
             }
 
             tbody.appendChild(tr);
-        }
+        };
         table.addEventListener('mouseover', (event) => {
             if (event.target.tagName !== "TD") {
                 return;
@@ -77,6 +79,7 @@ class TableCreator {
                 this.deleteRow(rows);
             }
         });
+
         return table;
     };
     highlightSiblings(rows, columns) {
@@ -103,10 +106,10 @@ class TableCreator {
     };
 };
 window.onload = () => {
-    let options = {
+    const options = {
         elementId: "tableHolder",
         formId: "tableCreatorForm"
     };
-    let tableCreator = new TableCreator(options);
+    const tableCreator = new TableCreator(options);
     tableCreator.init();
 };
