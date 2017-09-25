@@ -27,7 +27,6 @@ $(document).ready(() => {
         contentHolder.html('');
         loadData()
             .then(data => { 
-                console.log('data2:', data)
                 contentHolder.html(JSON.stringify(data, null, 2)); 
              })
             .catch(data => { contentHolder.html(data) })
@@ -42,10 +41,9 @@ $(document).ready(() => {
             .catch(res => console.error(res))
             .then(res => res.json())
             .then(data => {
-                console.log('data1:', data)
                 return createPromise(data);
             })
-    }
+    };
 
     function createPromise(data) {
         return new Promise((resolve, reject) => {
